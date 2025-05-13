@@ -91,15 +91,23 @@ function averageWordLength(words) {
 }
 
 // Bonus - Iteration #4.1
-function averageWordLength(words) {
-  if (words.length === 0) return null;
+function avg(arr) {
+  if (arr.length === 0) return null;
 
-  let totalLength = 0;
-  for (let word of words) {
-    totalLength += word.length;
+  let sum = 0;
+
+  for (let item of arr) {
+    console.log("elemento: " + item + " --> " + typeof item);
+    if (typeof item === "number") {
+      sum += item;
+    } else if (typeof item === "string") {
+      sum += item.length;
+    } else if (typeof item === "boolean") {
+      sum += item ? 1 : 0;
+    }
   }
 
-  return totalLength / words.length;
+  return parseFloat(sum / arr.length);
 }
 
 // Iteration #5: Unique arrays
@@ -240,8 +248,68 @@ const matrix = [
   ],
 ];
 
-function greatestProduct() {}
+function greatestProduct(matrix) {
+  let maxProduct = 0;
+  const numRows = matrix.length;
+  const numCols = matrix[0].length;
 
+  // Recorremos la matriz
+  for (let row = 0; row < numRows; row++) {
+    for (let col = 0; col < numCols; col++) {
+      // Producto horizontal (derecha)
+      if (col + 3 < numCols) {
+        const productH =
+          matrix[row][col] *
+          matrix[row][col + 1] *
+          matrix[row][col + 2] *
+          matrix[row][col + 3];
+        maxProduct = Math.max(maxProduct, productH);
+      }
+
+      // Producto vertical (abajo)
+      if (row + 3 < numRows) {
+        const productV =
+          matrix[row][col] *
+          matrix[row + 1][col] *
+          matrix[row + 2][col] *
+          matrix[row + 3][col];
+        maxProduct = Math.max(maxProduct, productV);
+      }
+    }
+  }
+
+  return maxProduct;
+}
+function greatestProductOfDiagonals(matrix) {
+  let maxProduct = 0;
+  const numRows = matrix.length;
+  const numCols = matrix[0].length;
+
+  // Recorremos la matriz
+  for (let row = 0; row < numRows; row++) {
+    for (let col = 0; col < numCols; col++) {
+      if (row + 3 < numRows && col + 3 < numCols) {
+        const productDiag1 =
+          matrix[row][col] *
+          matrix[row + 1][col + 1] *
+          matrix[row + 2][col + 2] *
+          matrix[row + 3][col + 3];
+        maxProduct = Math.max(maxProduct, productDiag1);
+      }
+
+      if (row + 3 < numRows && col - 3 >= 0) {
+        const productDiag2 =
+          matrix[row][col] *
+          matrix[row + 1][col - 1] *
+          matrix[row + 2][col - 2] *
+          matrix[row + 3][col - 3];
+        maxProduct = Math.max(maxProduct, productDiag2);
+      }
+    }
+  }
+
+  return maxProduct;
+}
 // The following is required to make unit tests work.
 /* Environment setup. Do not modify the below code. */
 if (typeof module !== "undefined") {
